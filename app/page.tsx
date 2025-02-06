@@ -50,19 +50,31 @@ export default function Home() {
       <div className="flex justify-center mb-4 space-x-4">
         <button
           onClick={() => setFilter("all")}
-          className="py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-400 focus:outline-none border-blue-600"
+          className={`py-2 px-4 rounded-md border-2 ${
+            filter === "all"
+              ? "border-blue-600 bg-blue-500 text-white"
+              : "border-gray-300 text-gray-800"
+          } hover:bg-blue-500 hover:border-blue-600 focus:outline-none`}
         >
           All
         </button>
         <button
           onClick={() => setFilter("completed")}
-          className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-400 focus:outline-none border-gren-500"
+          className={`py-2 px-4 rounded-md border-2 ${
+            filter === "completed"
+              ? "border-green-600 bg-green-500 text-white"
+              : "border-gray-300 text-gray-800"
+          } hover:bg-green-500 hover:border-green-600 focus:outline-none`}
         >
           Completed
         </button>
         <button
           onClick={() => setFilter("pending")}
-          className="py-2 px-4 bg-yellow-500 text-white rounded-md hover:bg-yellow-400 focus:outline-none borded-yellow-400"
+          className={`py-2 px-4 rounded-md border-2 ${
+            filter === "pending"
+              ? "border-yellow-600 bg-yellow-500 text-white"
+              : "border-gray-300 text-gray-800"
+          } hover:bg-yellow-500 hover:border-yellow-600 focus:outline-none`}
         >
           Pending
         </button>
