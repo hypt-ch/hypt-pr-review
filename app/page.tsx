@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Task = {
   text: string;
@@ -8,10 +8,17 @@ type Task = {
 };
 
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(
+    JSON.parse(localStorage.getItem("tasks") || "[]")
+  );
   const [filter, setFilter] = useState<string>("all");
 
   console.log("Home render");
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
   const addTask = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const taskText = (e.target as HTMLInputElement).value.trim();
