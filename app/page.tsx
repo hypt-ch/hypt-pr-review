@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Task = {
   text: string;
@@ -37,6 +38,12 @@ export default function Home() {
     setTasks(updatedTasks);
   };
 
+  const removeTask = (index: number) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
   return (
     <div className="max-w-4xl mx-auto p-8 bg-gray-50 rounded-lg shadow-lg">
       <h1 className="text-3xl text-center text-gray-800 mb-6">Todo List</h1>
@@ -45,6 +52,7 @@ export default function Home() {
       <TaskList
         tasks={tasks}
         toggleCompletion={toggleCompletion}
+        removeTask={removeTask}
         filter={filter}
       />
     </div>
@@ -119,10 +127,12 @@ const FilterButton = ({
 const TaskList = ({
   tasks,
   toggleCompletion,
+  removeTask,
   filter,
 }: {
   tasks: Task[];
   toggleCompletion: (index: number) => void;
+  removeTask: (index: number) => void;
   filter: string;
 }) => {
   const filterTasks = (tasks: Task[]) => {
@@ -142,6 +152,7 @@ const TaskList = ({
           task={task}
           index={index}
           toggleCompletion={toggleCompletion}
+          removeTask={removeTask}
         />
       ))}
     </ul>
@@ -152,19 +163,32 @@ const TaskItem = ({
   task,
   index,
   toggleCompletion,
+  removeTask,
 }: {
   task: Task;
   index: number;
   toggleCompletion: (index: number) => void;
+  removeTask: (index: number) => void;
 }) => {
   return (
     <li
+      className={`p-4 border-2 transition-colors rounded-md cursor-pointer flex justify-between items-center ${
+        task.completed ? "bg-green-200" : "bg-yellow-200"
+      } ${task.completed ? "text-green-700" : "text-gray-800"}`}
       onClick={() => toggleCompletion(index)}
-      className={`p-4 border-2 rounded-md cursor-pointer ${
-        task.completed ? "bg-green-200 line-through" : "bg-yellow-200"
-      } ${task.completed ? "text-gren-700" : "text-gray-800"}`}
     >
-      {task.text}
+      <span className={task.completed ? "line-through" : undefined}>
+        {task.text}
+      </span>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          removeTask(index);
+        }}
+        className="ml-4 p-1.5 transition-colors border-slate-900 text-slate-900 hover:text-white hover:bg-red-500 hover:border-red-500 rounded-md flex items-center"
+      >
+        <Image src="/thrash.svg" alt="Remove" width={16} height={16} />
+      </button>
     </li>
   );
 };
